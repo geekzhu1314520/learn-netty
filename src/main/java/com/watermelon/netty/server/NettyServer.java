@@ -1,4 +1,4 @@
-package com.watermelon.netty.demo01;
+package com.watermelon.netty.server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
