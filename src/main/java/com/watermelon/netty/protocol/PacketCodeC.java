@@ -1,5 +1,7 @@
-package com.watermelon.netty.protocol.command;
+package com.watermelon.netty.protocol;
 
+import com.watermelon.netty.protocol.request.LoginRequestPacket;
+import com.watermelon.netty.protocol.response.LoginResponsePacket;
 import com.watermelon.netty.serialize.Serializer;
 import com.watermelon.netty.serialize.impl.JSONSerializer;
 import io.netty.buffer.ByteBuf;
@@ -9,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.watermelon.netty.protocol.command.Command.LOGIN_REQUEST;
+import static com.watermelon.netty.protocol.command.Command.LOGIN_RESPONSE;
 
 public class PacketCodeC {
 
@@ -16,18 +19,21 @@ public class PacketCodeC {
     private static final Map<Byte, Class<? extends Packet>> packetTypeMap;
     private static final Map<Byte, Serializer> serializerMap;
 
+    public static final PacketCodeC INSTANCE = new PacketCodeC();
+
     static {
         packetTypeMap = new HashMap<>();
         packetTypeMap.put(LOGIN_REQUEST, LoginRequestPacket.class);
+        packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
 
         serializerMap = new HashMap<>();
         Serializer serializer = new JSONSerializer();
         serializerMap.put(serializer.getSerializerAlgorithm(), serializer);
     }
 
-    public ByteBuf encode(Packet packet) {
+    public ByteBuf encode(ByteBufAllocator allocator, Packet packet) {
         // 1.创建ByteBuf对象
-        ByteBuf byteBuf = ByteBufAllocator.DEFAULT.ioBuffer();
+        ByteBuf byteBuf = allocator.ioBuffer();
 
         // 2.序列化Java对象
         byte[] bytes = Serializer.DEFAULT.serialize(packet);

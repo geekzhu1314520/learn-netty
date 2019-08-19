@@ -1,4 +1,4 @@
-package com.watermelon.netty.protocol.command;
+package com.watermelon.netty.protocol;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;

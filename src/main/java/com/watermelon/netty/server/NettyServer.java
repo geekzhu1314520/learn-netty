@@ -28,7 +28,7 @@ public class NettyServer {
                     protected void initChannel(NioSocketChannel ch) throws Exception {
                         //NioServerSocketChannel和NioSocketChannel是对NIO类型连接的抽象，
                         // 其概念可以和 BIO 编程模型中的ServerSocket以及Socket两个概念对应上
-                        ch.pipeline().addLast(new FirstServerHandler());
+                        ch.pipeline().addLast(new ServerHandler());
                     }
                 });
 
