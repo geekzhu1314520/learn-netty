@@ -45,7 +45,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
             } else {
                 System.out.println(new Date() + ":客户端登录失败，原因：" + loginResponsePacket.getReason());
             }
-        }else if(packet instanceof MessageResponsePacket){
+        } else if (packet instanceof MessageResponsePacket) {
             MessageResponsePacket messageResponsePacket = (MessageResponsePacket) packet;
             System.out.println(new Date() + ":收到服务端消息->" + messageResponsePacket.getMessage());
         }
