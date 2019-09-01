@@ -2,6 +2,8 @@ package com.watermelon.netty.server;
 
 import com.watermelon.netty.codec.PacketDecoder;
 import com.watermelon.netty.codec.PacketEncoder;
+import com.watermelon.netty.codec.Spliter;
+import com.watermelon.netty.server.handler.FirstServerHandler;
 import com.watermelon.netty.server.handler.LoginRequestHandler;
 import com.watermelon.netty.server.handler.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -10,6 +12,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
 public class NettyServer {
     public static void main(String[] args) {
@@ -31,6 +34,10 @@ public class NettyServer {
                     protected void initChannel(NioSocketChannel ch) {
                         //NioServerSocketChannel和NioSocketChannel是对NIO类型连接的抽象，
                         // 其概念可以和 BIO 编程模型中的ServerSocket以及Socket两个概念对应上
+//                        ch.pipeline().addLast(new FirstServerHandler());
+//                        ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 7, 4));
+                        //替换为
+                        ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginRequestHandler());
                         ch.pipeline().addLast(new MessageRequestHandler());
