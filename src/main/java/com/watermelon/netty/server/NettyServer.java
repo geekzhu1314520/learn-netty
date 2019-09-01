@@ -4,6 +4,7 @@ import com.watermelon.netty.codec.PacketDecoder;
 import com.watermelon.netty.codec.PacketEncoder;
 import com.watermelon.netty.codec.Spliter;
 import com.watermelon.netty.server.handler.FirstServerHandler;
+import com.watermelon.netty.server.handler.LifeCycleTestHandler;
 import com.watermelon.netty.server.handler.LoginRequestHandler;
 import com.watermelon.netty.server.handler.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -37,7 +38,8 @@ public class NettyServer {
 //                        ch.pipeline().addLast(new FirstServerHandler());
 //                        ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 7, 4));
                         //替换为
-                        ch.pipeline().addLast(new Spliter());
+                        ch.pipeline().addLast(new LifeCycleTestHandler());
+//                        ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginRequestHandler());
                         ch.pipeline().addLast(new MessageRequestHandler());
