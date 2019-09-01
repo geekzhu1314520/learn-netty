@@ -1,11 +1,9 @@
 package com.watermelon.netty.server;
 
-import com.watermelon.netty.server.handler.inbound.InBoundHandlerA;
-import com.watermelon.netty.server.handler.inbound.InBoundHandlerB;
-import com.watermelon.netty.server.handler.inbound.InBoundHandlerC;
-import com.watermelon.netty.server.handler.outbound.OutBoundHandlerA;
-import com.watermelon.netty.server.handler.outbound.OutBoundHandlerB;
-import com.watermelon.netty.server.handler.outbound.OutBoundHandlerC;
+import com.watermelon.netty.codec.PacketDecoder;
+import com.watermelon.netty.codec.PacketEncoder;
+import com.watermelon.netty.server.handler.LoginRequestHandler;
+import com.watermelon.netty.server.handler.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -33,16 +31,10 @@ public class NettyServer {
                     protected void initChannel(NioSocketChannel ch) {
                         //NioServerSocketChannel和NioSocketChannel是对NIO类型连接的抽象，
                         // 其概念可以和 BIO 编程模型中的ServerSocket以及Socket两个概念对应上
-
-                        // inBound,处理读数据的逻辑链
-                        ch.pipeline().addLast(new InBoundHandlerA());
-                        ch.pipeline().addLast(new InBoundHandlerB());
-                        ch.pipeline().addLast(new InBoundHandlerC());
-
-                        // outBound,处理写数据的逻辑链
-                        ch.pipeline().addLast(new OutBoundHandlerA());
-                        ch.pipeline().addLast(new OutBoundHandlerB());
-                        ch.pipeline().addLast(new OutBoundHandlerC());
+                        ch.pipeline().addLast(new PacketDecoder());
+                        ch.pipeline().addLast(new LoginRequestHandler());
+                        ch.pipeline().addLast(new MessageRequestHandler());
+                        ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
         bind(bootstrap, 8000);

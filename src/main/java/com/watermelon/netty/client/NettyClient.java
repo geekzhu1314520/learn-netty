@@ -1,5 +1,9 @@
 package com.watermelon.netty.client;
 
+import com.watermelon.netty.client.handler.LoginResponseHandler;
+import com.watermelon.netty.client.handler.MessageResponseHandler;
+import com.watermelon.netty.codec.PacketDecoder;
+import com.watermelon.netty.codec.PacketEncoder;
 import com.watermelon.netty.protocol.PacketCodeC;
 import com.watermelon.netty.protocol.request.MessageRequestPacket;
 import com.watermelon.netty.util.LoginUtil;
@@ -41,7 +45,10 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(new ClientHandler());
+                        ch.pipeline().addLast(new PacketDecoder());
+                        ch.pipeline().addLast(new LoginResponseHandler());
+                        ch.pipeline().addLast(new MessageResponseHandler());
+                        ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
 
@@ -80,8 +87,7 @@ public class NettyClient {
                     MessageRequestPacket messageRequestPacket = new MessageRequestPacket();
                     messageRequestPacket.setMessage(line);
 
-                    ByteBuf byteBuf = PacketCodeC.INSTANCE.encode(channel.alloc(), messageRequestPacket);
-                    channel.writeAndFlush(byteBuf);
+                    channel.writeAndFlush(messageRequestPacket);
                 }
             }
         }).start();

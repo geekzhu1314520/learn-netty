@@ -34,14 +34,12 @@ public class PacketCodeC {
         serializerMap.put(serializer.getSerializerAlgorithm(), serializer);
     }
 
-    public ByteBuf encode(ByteBufAllocator allocator, Packet packet) {
-        // 1.创建ByteBuf对象
-        ByteBuf byteBuf = allocator.ioBuffer();
+    public ByteBuf encode(ByteBuf byteBuf, Packet packet) {
 
-        // 2.序列化Java对象
+        // 序列化Java对象
         byte[] bytes = Serializer.DEFAULT.serialize(packet);
 
-        // 3.实际编码过程
+        // 实际编码过程
         byteBuf.writeInt(MAGIC_NUMBER);
         byteBuf.writeByte(packet.getVersion());
         byteBuf.writeByte(Serializer.DEFAULT.getSerializerAlgorithm());
