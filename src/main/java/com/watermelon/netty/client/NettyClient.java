@@ -1,13 +1,13 @@
 package com.watermelon.netty.client;
 
-import com.watermelon.netty.client.handler.FirstClientHandler;
 import com.watermelon.netty.client.handler.LoginResponseHandler;
 import com.watermelon.netty.client.handler.MessageResponseHandler;
 import com.watermelon.netty.codec.PacketDecoder;
 import com.watermelon.netty.codec.PacketEncoder;
 import com.watermelon.netty.codec.Spliter;
+import com.watermelon.netty.protocol.request.LoginRequestPacket;
 import com.watermelon.netty.protocol.request.MessageRequestPacket;
-import com.watermelon.netty.util.LoginUtil;
+import com.watermelon.netty.util.SessionUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -16,7 +16,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
@@ -47,7 +46,7 @@ public class NettyClient {
                     protected void initChannel(SocketChannel ch) throws Exception {
 //                        ch.pipeline().addLast(new FirstClientHandler());
 //                        ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 7, 4));
-//                        ch.pipeline().addLast(new Spliter());
+                        ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginResponseHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
@@ -80,20 +79,36 @@ public class NettyClient {
     }
 
     private static void startConsoleThread(Channel channel) {
+
+        Scanner sc = new Scanner(System.in);
+        LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
+
         new Thread(() -> {
             while (!Thread.interrupted()) {
-//                if (LoginUtil.hasLogin(channel)) {
-                    System.out.println("输入消息发送服务端：");
-                    Scanner sc = new Scanner(System.in);
-                    String line = sc.nextLine();
+                if (!SessionUtil.hasLogin(channel)) {
+                    System.out.println("输入用户名登录：");
+                    String username = sc.nextLine();
+                    loginRequestPacket.setUsername(username);
+                    loginRequestPacket.setPassword("pwd");
 
-                    MessageRequestPacket messageRequestPacket = new MessageRequestPacket();
-                    messageRequestPacket.setMessage(line);
-
-                    channel.writeAndFlush(messageRequestPacket);
-//                }
+                    //发送登录数据报
+                    channel.writeAndFlush(loginRequestPacket);
+                    waitForLoginResponse();
+                } else {
+                    String toUserId = sc.next();
+                    String message = sc.next();
+                    channel.writeAndFlush(new MessageRequestPacket(toUserId, message));
+                }
             }
         }).start();
+    }
+
+    private static void waitForLoginResponse() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }
