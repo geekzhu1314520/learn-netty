@@ -1,5 +1,8 @@
 package com.watermelon.netty.client;
 
+import com.watermelon.netty.client.console.ConsoleCommandManager;
+import com.watermelon.netty.client.console.LoginConsoleCommand;
+import com.watermelon.netty.client.handler.CreateGroupResponseHandler;
 import com.watermelon.netty.client.handler.LoginResponseHandler;
 import com.watermelon.netty.client.handler.MessageResponseHandler;
 import com.watermelon.netty.codec.PacketDecoder;
@@ -50,6 +53,7 @@ public class NettyClient {
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginResponseHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
+                        ch.pipeline().addLast(new CreateGroupResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
@@ -81,34 +85,18 @@ public class NettyClient {
     private static void startConsoleThread(Channel channel) {
 
         Scanner sc = new Scanner(System.in);
-        LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
+        LoginConsoleCommand loginConsoleCommand = new LoginConsoleCommand();
+        ConsoleCommandManager consoleCommandManager = new ConsoleCommandManager();
 
         new Thread(() -> {
             while (!Thread.interrupted()) {
                 if (!SessionUtil.hasLogin(channel)) {
-                    System.out.println("输入用户名登录：");
-                    String username = sc.nextLine();
-                    loginRequestPacket.setUsername(username);
-                    loginRequestPacket.setPassword("pwd");
-
-                    //发送登录数据报
-                    channel.writeAndFlush(loginRequestPacket);
-                    waitForLoginResponse();
+                    loginConsoleCommand.exec(sc, channel);
                 } else {
-                    String toUserId = sc.next();
-                    String message = sc.next();
-                    channel.writeAndFlush(new MessageRequestPacket(toUserId, message));
+                    consoleCommandManager.exec(sc, channel);
                 }
             }
         }).start();
-    }
-
-    private static void waitForLoginResponse() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
 }

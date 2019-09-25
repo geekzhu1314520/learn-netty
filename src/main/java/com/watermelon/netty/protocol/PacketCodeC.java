@@ -1,7 +1,9 @@
 package com.watermelon.netty.protocol;
 
+import com.watermelon.netty.protocol.request.CreateGroupRequestPacket;
 import com.watermelon.netty.protocol.request.LoginRequestPacket;
 import com.watermelon.netty.protocol.request.MessageRequestPacket;
+import com.watermelon.netty.protocol.response.CreateGroupResponsePacket;
 import com.watermelon.netty.protocol.response.LoginResponsePacket;
 import com.watermelon.netty.protocol.response.MessageResponsePacket;
 import com.watermelon.netty.serialize.Serializer;
@@ -28,6 +30,8 @@ public class PacketCodeC {
         packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
         packetTypeMap.put(MESSAGE_REQUEST, MessageRequestPacket.class);
         packetTypeMap.put(MESSAGE_RESPONSE, MessageResponsePacket.class);
+        packetTypeMap.put(CREATE_GROUP_REQUEST, CreateGroupRequestPacket.class);
+        packetTypeMap.put(CREATE_GROUP_RESPONSE, CreateGroupResponsePacket.class);
 
         serializerMap = new HashMap<>();
         Serializer serializer = new JSONSerializer();

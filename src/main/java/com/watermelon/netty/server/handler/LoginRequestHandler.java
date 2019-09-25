@@ -3,6 +3,7 @@ package com.watermelon.netty.server.handler;
 import com.watermelon.netty.protocol.request.LoginRequestPacket;
 import com.watermelon.netty.protocol.response.LoginResponsePacket;
 import com.watermelon.netty.session.Session;
+import com.watermelon.netty.util.RandomUtil;
 import com.watermelon.netty.util.SessionUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -19,7 +20,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
 
         if (valid(loginRequestPacket)) {
             loginResponsePacket.setSuccess(true);
-            String userId = randomUserId();
+            String userId = RandomUtil.randomUserId();
             loginResponsePacket.setUserId(userId);
             System.out.println("[" + loginRequestPacket.getUsername() + "]登录成功");
             SessionUtil.bindSession(new Session(userId, loginRequestPacket.getUsername()), ctx.channel());
@@ -35,10 +36,6 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
 
     private boolean valid(LoginRequestPacket loginRequestPacket) {
         return true;
-    }
-
-    private String randomUserId() {
-        return UUID.randomUUID().toString().split("-")[0];
     }
 
     @Override

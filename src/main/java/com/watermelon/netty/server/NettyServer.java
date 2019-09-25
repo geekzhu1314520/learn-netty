@@ -3,14 +3,16 @@ package com.watermelon.netty.server;
 import com.watermelon.netty.codec.PacketDecoder;
 import com.watermelon.netty.codec.PacketEncoder;
 import com.watermelon.netty.codec.Spliter;
-import com.watermelon.netty.server.handler.*;
+import com.watermelon.netty.server.handler.AuthHandler;
+import com.watermelon.netty.server.handler.CreateGroupHandler;
+import com.watermelon.netty.server.handler.LoginRequestHandler;
+import com.watermelon.netty.server.handler.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
 public class NettyServer {
     public static void main(String[] args) {
@@ -30,18 +32,13 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {  //定义后续每条连接的数据读写，业务处理逻辑
                     @Override
                     protected void initChannel(NioSocketChannel ch) {
-                        //NioServerSocketChannel和NioSocketChannel是对NIO类型连接的抽象，
-                        // 其概念可以和 BIO 编程模型中的ServerSocket以及Socket两个概念对应上
-//                        ch.pipeline().addLast(new FirstServerHandler());
-//                        ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 7, 4));
-                        //替换为
-//                        ch.pipeline().addLast(new LifeCycleTestHandler());
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginRequestHandler());
-                        //新增用户认证handler
                         ch.pipeline().addLast(new AuthHandler());
                         ch.pipeline().addLast(new MessageRequestHandler());
+                        //建群handler
+                        ch.pipeline().addLast(new CreateGroupHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
