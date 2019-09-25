@@ -4,6 +4,7 @@ import com.watermelon.netty.client.console.ConsoleCommandManager;
 import com.watermelon.netty.client.console.LoginConsoleCommand;
 import com.watermelon.netty.client.handler.CreateGroupResponseHandler;
 import com.watermelon.netty.client.handler.LoginResponseHandler;
+import com.watermelon.netty.client.handler.LogoutResponseHandler;
 import com.watermelon.netty.client.handler.MessageResponseHandler;
 import com.watermelon.netty.codec.PacketDecoder;
 import com.watermelon.netty.codec.PacketEncoder;
@@ -47,13 +48,12 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
-//                        ch.pipeline().addLast(new FirstClientHandler());
-//                        ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 7, 4));
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginResponseHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
                         ch.pipeline().addLast(new CreateGroupResponseHandler());
+                        ch.pipeline().addLast(new LogoutResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
                 });

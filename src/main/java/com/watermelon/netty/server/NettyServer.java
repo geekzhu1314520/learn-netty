@@ -3,10 +3,7 @@ package com.watermelon.netty.server;
 import com.watermelon.netty.codec.PacketDecoder;
 import com.watermelon.netty.codec.PacketEncoder;
 import com.watermelon.netty.codec.Spliter;
-import com.watermelon.netty.server.handler.AuthHandler;
-import com.watermelon.netty.server.handler.CreateGroupHandler;
-import com.watermelon.netty.server.handler.LoginRequestHandler;
-import com.watermelon.netty.server.handler.MessageRequestHandler;
+import com.watermelon.netty.server.handler.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -39,6 +36,7 @@ public class NettyServer {
                         ch.pipeline().addLast(new MessageRequestHandler());
                         //建群handler
                         ch.pipeline().addLast(new CreateGroupHandler());
+                        ch.pipeline().addLast(new LogoutRequestHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
