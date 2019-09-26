@@ -2,10 +2,7 @@ package com.watermelon.netty.client;
 
 import com.watermelon.netty.client.console.ConsoleCommandManager;
 import com.watermelon.netty.client.console.LoginConsoleCommand;
-import com.watermelon.netty.client.handler.CreateGroupResponseHandler;
-import com.watermelon.netty.client.handler.LoginResponseHandler;
-import com.watermelon.netty.client.handler.LogoutResponseHandler;
-import com.watermelon.netty.client.handler.MessageResponseHandler;
+import com.watermelon.netty.client.handler.*;
 import com.watermelon.netty.codec.PacketDecoder;
 import com.watermelon.netty.codec.PacketEncoder;
 import com.watermelon.netty.codec.Spliter;
@@ -53,6 +50,7 @@ public class NettyClient {
                         ch.pipeline().addLast(new LoginResponseHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
                         ch.pipeline().addLast(new CreateGroupResponseHandler());
+                        ch.pipeline().addLast(new JoinGroupResponseHandler());
                         ch.pipeline().addLast(new LogoutResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }

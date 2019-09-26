@@ -13,7 +13,7 @@ import io.netty.channel.group.DefaultChannelGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateGroupHandler extends SimpleChannelInboundHandler<CreateGroupRequestPacket> {
+public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<CreateGroupRequestPacket> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, CreateGroupRequestPacket msg) throws Exception {
@@ -30,9 +30,10 @@ public class CreateGroupHandler extends SimpleChannelInboundHandler<CreateGroupR
             }
         }
 
+        String groupId = RandomUtil.randomUserId();
         CreateGroupResponsePacket createGroupResponsePacket = new CreateGroupResponsePacket();
         createGroupResponsePacket.setSuccess(true);
-        createGroupResponsePacket.setGroupId(RandomUtil.randomUserId());
+        createGroupResponsePacket.setGroupId(groupId);
         createGroupResponsePacket.setUserNameList(userNameList);
 
         //给每个客户端发个群通知
@@ -41,5 +42,7 @@ public class CreateGroupHandler extends SimpleChannelInboundHandler<CreateGroupR
         System.out.print("群创建成功，id为[" + createGroupResponsePacket.getGroupId() + "], ");
         System.out.println("群里面有：" + createGroupResponsePacket.getUserNameList());
 
+        //保存群组信息
+        SessionUtil.bindChannelGroup(groupId, channelGroup);
     }
 }

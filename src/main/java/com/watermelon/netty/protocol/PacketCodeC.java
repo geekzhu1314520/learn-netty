@@ -1,13 +1,7 @@
 package com.watermelon.netty.protocol;
 
-import com.watermelon.netty.protocol.request.CreateGroupRequestPacket;
-import com.watermelon.netty.protocol.request.LoginRequestPacket;
-import com.watermelon.netty.protocol.request.LogoutRequestPacket;
-import com.watermelon.netty.protocol.request.MessageRequestPacket;
-import com.watermelon.netty.protocol.response.CreateGroupResponsePacket;
-import com.watermelon.netty.protocol.response.LoginResponsePacket;
-import com.watermelon.netty.protocol.response.LogoutResponsePacket;
-import com.watermelon.netty.protocol.response.MessageResponsePacket;
+import com.watermelon.netty.protocol.request.*;
+import com.watermelon.netty.protocol.response.*;
 import com.watermelon.netty.serialize.Serializer;
 import com.watermelon.netty.serialize.impl.JSONSerializer;
 import io.netty.buffer.ByteBuf;
@@ -36,6 +30,8 @@ public class PacketCodeC {
         packetTypeMap.put(LOGOUT_RESPONSE, LogoutResponsePacket.class);
         packetTypeMap.put(CREATE_GROUP_REQUEST, CreateGroupRequestPacket.class);
         packetTypeMap.put(CREATE_GROUP_RESPONSE, CreateGroupResponsePacket.class);
+        packetTypeMap.put(JOIN_GROUP_REQUEST, JoinGroupRequestPacket.class);
+        packetTypeMap.put(JOIN_GROUP_RESPONSE, JoinGroupResponsePacket.class);
 
         serializerMap = new HashMap<>();
         Serializer serializer = new JSONSerializer();
