@@ -6,8 +6,6 @@ import com.watermelon.netty.client.handler.*;
 import com.watermelon.netty.codec.PacketDecoder;
 import com.watermelon.netty.codec.PacketEncoder;
 import com.watermelon.netty.codec.Spliter;
-import com.watermelon.netty.protocol.request.LoginRequestPacket;
-import com.watermelon.netty.protocol.request.MessageRequestPacket;
 import com.watermelon.netty.util.SessionUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -51,6 +49,8 @@ public class NettyClient {
                         ch.pipeline().addLast(new MessageResponseHandler());
                         ch.pipeline().addLast(new CreateGroupResponseHandler());
                         ch.pipeline().addLast(new JoinGroupResponseHandler());
+                        //退出群聊
+                        ch.pipeline().addLast(new QuitGroupResponseHandler());
                         ch.pipeline().addLast(new LogoutResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }

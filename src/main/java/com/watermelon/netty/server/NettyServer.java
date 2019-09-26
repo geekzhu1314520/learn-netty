@@ -38,6 +38,8 @@ public class NettyServer {
                         ch.pipeline().addLast(new CreateGroupRequestHandler());
                         //加入群组
                         ch.pipeline().addLast(new JoinGroupRequestHandler());
+                        //退出群聊
+                        ch.pipeline().addLast(new QuitGroupRequestHandler());
                         ch.pipeline().addLast(new LogoutRequestHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }

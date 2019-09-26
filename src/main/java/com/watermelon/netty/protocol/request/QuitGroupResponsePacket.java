@@ -1,11 +1,11 @@
-package com.watermelon.netty.protocol.response;
+package com.watermelon.netty.protocol.request;
 
 import com.watermelon.netty.protocol.Packet;
 import com.watermelon.netty.protocol.command.Command;
 import lombok.Data;
 
 @Data
-public class JoinGroupResponsePacket extends Packet {
+public class QuitGroupResponsePacket extends Packet {
 
     private String groupId;
     private boolean success;
@@ -13,6 +13,6 @@ public class JoinGroupResponsePacket extends Packet {
 
     @Override
     public Byte getCommand() {
-        return Command.JOIN_GROUP_RESPONSE;
+        return Command.QUIT_GROUP_RESPONSE;
     }
 }
