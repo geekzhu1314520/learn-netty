@@ -51,6 +51,8 @@ public class NettyClient {
                         ch.pipeline().addLast(new JoinGroupResponseHandler());
                         //退出群聊
                         ch.pipeline().addLast(new QuitGroupResponseHandler());
+                        //群成员
+                        ch.pipeline().addLast(new ListGroupResponseHandler());
                         ch.pipeline().addLast(new LogoutResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }

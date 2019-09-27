@@ -12,4 +12,9 @@ import java.io.Serializable;
 public class Session implements Serializable {
     private String userId;
     private String userName;
+
+    @Override
+    public String toString() {
+        return userId + ":" + userName;
+    }
 }
