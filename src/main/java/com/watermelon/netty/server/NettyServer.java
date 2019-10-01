@@ -34,18 +34,7 @@ public class NettyServer {
                         ch.pipeline().addLast(PacketCodecHandler.INSTANCE);
                         ch.pipeline().addLast(LoginRequestHandler.INSTANCE);
                         ch.pipeline().addLast(AuthHandler.INSTANCE);
-                        ch.pipeline().addLast(MessageRequestHandler.INSTANCE);
-                        //建群handler
-                        ch.pipeline().addLast(CreateGroupRequestHandler.INSTANCE);
-                        //加入群组
-                        ch.pipeline().addLast(JoinGroupRequestHandler.INSTANCE);
-                        //退出群聊
-                        ch.pipeline().addLast(QuitGroupRequestHandler.INSTANCE);
-                        //成员列表
-                        ch.pipeline().addLast(ListGroupRequestHandler.INSTANCE);
-                        //群消息
-                        ch.pipeline().addLast(SendToGroupRequestHandler.INSTANCE);
-                        ch.pipeline().addLast(LogoutRequestHandler.INSTANCE);
+                        ch.pipeline().addLast(IMHandler.INSTANCE);
                     }
                 });
         bind(bootstrap, 8000);

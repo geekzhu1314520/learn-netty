@@ -41,7 +41,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         }
 
         // 登录响应
-        ctx.channel().writeAndFlush(loginResponsePacket);
+        ctx.writeAndFlush(loginResponsePacket);
     }
 
     private boolean valid(LoginRequestPacket loginRequestPacket) {
