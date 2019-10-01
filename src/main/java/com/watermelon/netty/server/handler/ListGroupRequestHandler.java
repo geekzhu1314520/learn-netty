@@ -1,10 +1,12 @@
 package com.watermelon.netty.server.handler;
 
+import com.watermelon.netty.client.handler.ListGroupResponseHandler;
 import com.watermelon.netty.protocol.request.ListGroupRequestPacket;
 import com.watermelon.netty.protocol.response.ListGroupResponsePacket;
 import com.watermelon.netty.session.Session;
 import com.watermelon.netty.util.SessionUtil;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -12,7 +14,13 @@ import io.netty.channel.group.ChannelGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+@ChannelHandler.Sharable
 public class ListGroupRequestHandler extends SimpleChannelInboundHandler<ListGroupRequestPacket> {
+
+    public static final ListGroupRequestHandler INSTANCE = new ListGroupRequestHandler();
+
+    private ListGroupRequestHandler(){
+    }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ListGroupRequestPacket listGroupRequestPacket) throws Exception {

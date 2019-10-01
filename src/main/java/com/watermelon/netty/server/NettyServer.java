@@ -31,20 +31,20 @@ public class NettyServer {
                     protected void initChannel(NioSocketChannel ch) {
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
-                        ch.pipeline().addLast(new LoginRequestHandler());
-                        ch.pipeline().addLast(new AuthHandler());
-                        ch.pipeline().addLast(new MessageRequestHandler());
+                        ch.pipeline().addLast(LoginRequestHandler.INSTANCE);
+                        ch.pipeline().addLast(AuthHandler.INSTANCE);
+                        ch.pipeline().addLast(MessageRequestHandler.INSTANCE);
                         //建群handler
-                        ch.pipeline().addLast(new CreateGroupRequestHandler());
+                        ch.pipeline().addLast(CreateGroupRequestHandler.INSTANCE);
                         //加入群组
-                        ch.pipeline().addLast(new JoinGroupRequestHandler());
+                        ch.pipeline().addLast(JoinGroupRequestHandler.INSTANCE);
                         //退出群聊
-                        ch.pipeline().addLast(new QuitGroupRequestHandler());
+                        ch.pipeline().addLast(QuitGroupRequestHandler.INSTANCE);
                         //成员列表
-                        ch.pipeline().addLast(new ListGroupRequestHandler());
+                        ch.pipeline().addLast(ListGroupRequestHandler.INSTANCE);
                         //群消息
-                        ch.pipeline().addLast(new SendToGroupRequestHandler());
-                        ch.pipeline().addLast(new LogoutRequestHandler());
+                        ch.pipeline().addLast(SendToGroupRequestHandler.INSTANCE);
+                        ch.pipeline().addLast(LogoutRequestHandler.INSTANCE);
                         ch.pipeline().addLast(new PacketEncoder());
                     }
                 });

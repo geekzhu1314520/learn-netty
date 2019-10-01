@@ -4,11 +4,19 @@ import com.watermelon.netty.protocol.request.SendToGroupRequestPacket;
 import com.watermelon.netty.protocol.response.SendToGroupResponsePacket;
 import com.watermelon.netty.session.Session;
 import com.watermelon.netty.util.SessionUtil;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 
+@ChannelHandler.Sharable
 public class SendToGroupRequestHandler extends SimpleChannelInboundHandler<SendToGroupRequestPacket> {
+
+    public static final SendToGroupRequestHandler INSTANCE = new SendToGroupRequestHandler();
+
+    private SendToGroupRequestHandler(){
+    }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, SendToGroupRequestPacket requestPacket) throws Exception {
 
