@@ -1,5 +1,6 @@
 package com.watermelon.netty.server;
 
+import com.watermelon.netty.codec.PacketCodecHandler;
 import com.watermelon.netty.codec.PacketDecoder;
 import com.watermelon.netty.codec.PacketEncoder;
 import com.watermelon.netty.codec.Spliter;
@@ -30,7 +31,7 @@ public class NettyServer {
                     @Override
                     protected void initChannel(NioSocketChannel ch) {
                         ch.pipeline().addLast(new Spliter());
-                        ch.pipeline().addLast(new PacketDecoder());
+                        ch.pipeline().addLast(PacketCodecHandler.INSTANCE);
                         ch.pipeline().addLast(LoginRequestHandler.INSTANCE);
                         ch.pipeline().addLast(AuthHandler.INSTANCE);
                         ch.pipeline().addLast(MessageRequestHandler.INSTANCE);
@@ -45,7 +46,6 @@ public class NettyServer {
                         //群消息
                         ch.pipeline().addLast(SendToGroupRequestHandler.INSTANCE);
                         ch.pipeline().addLast(LogoutRequestHandler.INSTANCE);
-                        ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
         bind(bootstrap, 8000);
