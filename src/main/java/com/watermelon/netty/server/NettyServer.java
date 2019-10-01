@@ -4,6 +4,7 @@ import com.watermelon.netty.codec.PacketCodecHandler;
 import com.watermelon.netty.codec.PacketDecoder;
 import com.watermelon.netty.codec.PacketEncoder;
 import com.watermelon.netty.codec.Spliter;
+import com.watermelon.netty.handler.IMIdleStateHandler;
 import com.watermelon.netty.server.handler.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -30,6 +31,8 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {  //定义后续每条连接的数据读写，业务处理逻辑
                     @Override
                     protected void initChannel(NioSocketChannel ch) {
+                        //空闲检测
+                        ch.pipeline().addLast(new IMIdleStateHandler());
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(PacketCodecHandler.INSTANCE);
                         ch.pipeline().addLast(LoginRequestHandler.INSTANCE);
