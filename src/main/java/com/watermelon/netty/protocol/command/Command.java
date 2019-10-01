@@ -1,5 +1,7 @@
 package com.watermelon.netty.protocol.command;
 
+import io.netty.buffer.ByteBuf;
+
 public interface Command {
 
     Byte LOGIN_REQUEST = 1;
@@ -34,4 +36,7 @@ public interface Command {
 
     Byte SEND_TO_GROUP_RESPONSE = 16;
 
+    Byte HEART_BEAT_REQUEST = 17;
+
+    Byte HEART_BEAT_RESPONSE = 18;
 }

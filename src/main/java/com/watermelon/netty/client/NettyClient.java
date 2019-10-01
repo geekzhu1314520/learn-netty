@@ -6,6 +6,7 @@ import com.watermelon.netty.client.handler.*;
 import com.watermelon.netty.codec.PacketDecoder;
 import com.watermelon.netty.codec.PacketEncoder;
 import com.watermelon.netty.codec.Spliter;
+import com.watermelon.netty.handler.IMIdleStateHandler;
 import com.watermelon.netty.util.SessionUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -43,6 +44,8 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
+                        //空闲检测
+                        ch.pipeline().addLast(new IMIdleStateHandler());
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginResponseHandler());
@@ -57,6 +60,8 @@ public class NettyClient {
                         ch.pipeline().addLast(new SendToGroupResponseHandler());
                         ch.pipeline().addLast(new LogoutResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
+                        //发送心跳包
+                        ch.pipeline().addLast(new HeartBeatTimerHandler());
                     }
                 });
 

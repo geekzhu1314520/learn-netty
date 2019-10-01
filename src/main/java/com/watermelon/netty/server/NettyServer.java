@@ -1,11 +1,12 @@
 package com.watermelon.netty.server;
 
 import com.watermelon.netty.codec.PacketCodecHandler;
-import com.watermelon.netty.codec.PacketDecoder;
-import com.watermelon.netty.codec.PacketEncoder;
 import com.watermelon.netty.codec.Spliter;
 import com.watermelon.netty.handler.IMIdleStateHandler;
-import com.watermelon.netty.server.handler.*;
+import com.watermelon.netty.server.handler.AuthHandler;
+import com.watermelon.netty.server.handler.HeartBeatRequestHandler;
+import com.watermelon.netty.server.handler.IMHandler;
+import com.watermelon.netty.server.handler.LoginRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -36,6 +37,7 @@ public class NettyServer {
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(PacketCodecHandler.INSTANCE);
                         ch.pipeline().addLast(LoginRequestHandler.INSTANCE);
+                        ch.pipeline().addLast(HeartBeatRequestHandler.INSTANCE);
                         ch.pipeline().addLast(AuthHandler.INSTANCE);
                         ch.pipeline().addLast(IMHandler.INSTANCE);
                     }
