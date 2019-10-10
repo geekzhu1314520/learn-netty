@@ -12,7 +12,7 @@ public class ByteBufTest {
         buf.writeBytes(new byte[]{1,2,3,4});
         print("writeBytes(1,2,3,4)", buf);
 
-        buf.writeByte(12);
+        buf.writeInt(12);
         print("writeInt(12)", buf);
 
         buf.writeBytes(new byte[]{5});
